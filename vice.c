@@ -9,17 +9,17 @@ int main() {
 	
 	U64 playBitBoard = 0ULL;
 	
-	printf("Start:\n\n");
-	PrintBitBoard(playBitBoard);
+	playBitBoard |= (1ULL << SQ64(D2));		
+	playBitBoard |= (1ULL << SQ64(D3));		
+	playBitBoard |= (1ULL << SQ64(D4));	
 	
+	int sq64 = 0;
 	
-	playBitBoard |= (1ULL << SQ64(D2));	
-	printf("D2 Added:\n\n");
-	PrintBitBoard(playBitBoard);
-	
-	playBitBoard |= (1ULL << SQ64(G2));	
-	printf("G2 Added:\n\n");
-	PrintBitBoard(playBitBoard);
+	while (playBitBoard) {
+		sq64 = POP(&playBitBoard);		
+		printf("popped:%d\n",sq64);
+		PrintBitBoard(playBitBoard);	
+	}
 		
 	return 0;
 }
