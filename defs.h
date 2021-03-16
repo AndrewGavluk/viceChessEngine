@@ -72,6 +72,7 @@ typedef struct {
 	
 	int castlePerm;
 	
+	// hash key, unique number representing position 
 	U64 posKey;
 	
 	int pceNum[13];
