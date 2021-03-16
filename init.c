@@ -5,6 +5,22 @@
 int Sq120ToSq64[BRD_SQ_NUM];
 int Sq64ToSq120[64];
 
+U64 SetMask[64];
+U64 ClearMask[64];
+
+void InitBitMasks(){
+	u_int8_t i = 0;
+	
+	for (i = 0; i < 64; ++i){
+		SetMask[i]= 0ULL;
+		ClearMask[i] = 0ULL;
+	} 
+
+	for (i = 0; i < 64; ++i){
+		SetMask[i] |= (1ULL << i) ;
+		ClearMask[i] = ~SetMask[i];
+	} 
+}
 
 void InitSq120To64() {
 
@@ -33,4 +49,5 @@ void InitSq120To64() {
 
 void AllInit() {
 	InitSq120To64();	
+	InitBitMasks();
 }
