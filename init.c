@@ -1,12 +1,45 @@
 // init.c
 
 #include "defs.h"
+#include "stdlib.h"
 
+#define RAND_64 (	(U64)rand() + \
+					(U64)rand() << 15 + \
+					(U64)rand() << 30 + \
+					(U64)rand() << 45 + \
+					((U64)rand() & 0xf) << 60 )
+
+
+// Array to convert Board120 to Board64
 int Sq120ToSq64[BRD_SQ_NUM];
 int Sq64ToSq120[64];
 
+// SetMask is an array of masks. 1 in i position of i number in an array
+// ClearMask is an array of masks. 0 in i position of i number in an array
 U64 SetMask[64];
 U64 ClearMask[64];
+
+// PieceKeys is a unique key for each piece (chessman), on each square
+//		[13] - is for chessmans: 0 - none, 1 - wP (white pawn), 2 - wB, ... 12 - bK
+//		[120] - "extended" chessboard
+// SideKey - key for white/black side to move
+// Castling - 4 views of castling (wK, wQ, bK, bQ) 2^4 = 16
+U64 PieceKeys[13][120];
+U64 SideKey;
+U64 CastleKeys[16];
+
+void InitHashKeys(){
+	int index1 = 0;
+	int index2 = 0;
+	
+	for (; index1 < 13; ++index1)
+		for (index2 = 0 ; index2 < 120 ; ++index2)
+			PieceKeys[index1][index2] = RAND_64;
+
+	SideKey = RAND_64;
+	for (index1 = 0; index1 < 16; ++index1)
+		CastleKeys[index1] = RAND_64;
+}
 
 void InitBitMasks(){
 	u_int8_t i = 0;
@@ -50,4 +83,5 @@ void InitSq120To64() {
 void AllInit() {
 	InitSq120To64();	
 	InitBitMasks();
+	InitHashKeys();
 }
